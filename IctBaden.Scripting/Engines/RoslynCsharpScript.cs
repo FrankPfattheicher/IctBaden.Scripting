@@ -12,7 +12,7 @@ namespace IctBaden.Scripting.Engines
     internal class RoslynCsharpScript : ScriptEngine
     {
         // ReSharper disable once UnusedMember.Local
-        private Platform _platform = SystemInfo.Platform;
+        private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
 
         public override T Eval<T>(string expression, ScriptContext context = null)
         {
