@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.Types;
+// ReSharper disable CommentTypo
 
 namespace IctBaden.Scripting.Engines
 {
@@ -14,7 +15,7 @@ namespace IctBaden.Scripting.Engines
         // ReSharper disable once UnusedMember.Local
         private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
 
-        public override T Eval<T>(string expression, ScriptContext context = null)
+        public override T Eval<T>(string expression, object context = null)
         {
             LastError = string.Empty;
 
@@ -38,7 +39,7 @@ namespace IctBaden.Scripting.Engines
                 .AddReferences(refs);
 
             var script = (context != null) 
-                        ? CSharpScript.Create(expression, options, typeof(ScriptContext))
+                        ? CSharpScript.Create(expression, options, context.GetType())
                         : CSharpScript.Create(expression, options);
 
             try

@@ -7,7 +7,7 @@ namespace IctBaden.Scripting
     {
         public string LastError { get; protected set; }
 
-        public abstract T Eval<T>(string expression, ScriptContext context = null);
+        public abstract T Eval<T>(string expression, object context = null);
 
         /// <summary>
         /// User error handling
@@ -32,7 +32,7 @@ namespace IctBaden.Scripting
         {
         }
 
-        public string ReplaceExpressions(string text, ScriptContext context = null)
+        public string ReplaceExpressions(string text, object context = null)
         {
             if (string.IsNullOrEmpty(text))
                 return string.Empty;
