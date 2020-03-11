@@ -12,7 +12,6 @@
     <PackageProjectUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
     <PackageTags>1.0.0</PackageTags>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
