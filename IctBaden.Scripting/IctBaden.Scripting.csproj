@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IctBaden.Framework" Version="1.0.24" />
+    <PackageReference Include="IctBaden.Framework" Version="1.0.25" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
   </ItemGroup>
 
