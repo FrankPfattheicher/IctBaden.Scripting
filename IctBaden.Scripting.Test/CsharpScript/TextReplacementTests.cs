@@ -16,10 +16,12 @@ namespace IctBaden.Scripting.Test.CsharpScript
         [Fact]
         public void ContextValuesBeResolved()
         {
-            var context = new ScriptContext();
-            context.SetValue("TargetName", "Frank");
+            var context = new ScriptContext
+            {
+                ["TargetName"] = "Frank"
+            };
 
-            const string text = "Hallo, ich bin {{GetValue<string>(\"TargetName\")}} !";
+            const string text = "Hallo, ich bin {{GetValue(\"TargetName\")}} !";
             var result = _engine.ReplaceExpressions(text, context);
             Assert.Equal("Hallo, ich bin Frank !", result);
         }

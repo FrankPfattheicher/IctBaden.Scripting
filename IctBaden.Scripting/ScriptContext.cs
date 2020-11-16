@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace IctBaden.Scripting
 {
@@ -27,6 +28,8 @@ namespace IctBaden.Scripting
             _queryValue = query;
         }
 
+        public object GetValue(string key) => this[key];
+        
         public object this[string key]
         {
             set => _valueList[key] = value;

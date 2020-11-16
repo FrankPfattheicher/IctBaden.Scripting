@@ -57,11 +57,13 @@ namespace IctBaden.Scripting.Test.CsharpScript
         [Fact]
         public void ContextValuesBeResolved()
         {
-            var context = new ScriptContext();
-            context.SetValue("Var1", 1000);
-            context.SetValue("Var2", 234);
+            var context = new ScriptContext
+            {
+                ["Var1"] = 1000, 
+                ["Var2"] = 234
+            };
 
-            const string script = "GetValue<int>(\"Var1\") + GetValue<int>(\"Var2\")";
+            const string script = "(int)GetValue(\"Var1\") + (int)GetValue(\"Var2\")";
             var result = _engine.Eval<int>(script, context);
             Assert.Equal(1234, result);
         }
