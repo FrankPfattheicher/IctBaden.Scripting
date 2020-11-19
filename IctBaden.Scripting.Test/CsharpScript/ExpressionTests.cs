@@ -55,7 +55,7 @@ namespace IctBaden.Scripting.Test.CsharpScript
         }
 
         [Fact]
-        public void ContextValuesBeResolved()
+        public void ContextDictionaryValuesBeResolved()
         {
             var context = new ScriptContext
             {
@@ -64,6 +64,18 @@ namespace IctBaden.Scripting.Test.CsharpScript
             };
 
             const string script = "(int)GetValue(\"Var1\") + (int)GetValue(\"Var2\")";
+            var result = _engine.Eval<int>(script, context);
+            Assert.Equal(1234, result);
+        }
+
+        [Fact]
+        public void ContextDynamicValuesBeResolved()
+        {
+            var context = new ScriptContext();
+            context.Var.Value1 = 1000;
+            context.Var.Value2 = 234;
+        
+            const string script = "Var.Value1 + Var.Value2";
             var result = _engine.Eval<int>(script, context);
             Assert.Equal(1234, result);
         }

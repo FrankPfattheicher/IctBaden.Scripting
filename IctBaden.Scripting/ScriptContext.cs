@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -9,6 +10,7 @@ namespace IctBaden.Scripting
     {
         private readonly Dictionary<string, object> _valueList;
         private QueryValue _queryValue;
+        public dynamic Var = new ExpandoObject(); 
 
         public delegate object QueryValue(string key);
 

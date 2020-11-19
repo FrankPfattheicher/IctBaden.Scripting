@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.Types;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 // ReSharper disable CommentTypo
 
@@ -17,8 +17,8 @@ namespace IctBaden.Scripting.Engines
     {
         // ReSharper disable once UnusedMember.Local
         private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
-        private ScriptOptions _options;
-        private Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>(); 
+        private readonly ScriptOptions _options;
+        private readonly Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>(); 
 
         public RoslynCsharpScript(string[] userImports)
         {
@@ -30,16 +30,21 @@ namespace IctBaden.Scripting.Engines
                     "System.Linq",
                     "System.Net",
                     "System.Text",
+                    "Microsoft.CSharp",
                     "IctBaden.Framework.AppUtils"
                 }.Concat(userImports)
                 .ToArray();
-            
-            var refs = new[]
-            {
-                Assembly.GetEntryAssembly(),
-                Assembly.GetCallingAssembly()
-            };
 
+            var refs = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.GetName().Name.StartsWith("System.") && !a.IsDynamic && !a.ReflectionOnly && a.DefinedTypes.Any())
+                .Union(new []
+                {
+                    Assembly.GetEntryAssembly(),
+                    Assembly.GetCallingAssembly(), 
+                    typeof(Binder).Assembly
+                })
+                .ToArray();
+            
             _options = ScriptOptions.Default
                 .WithImports(imports)
                 .AddReferences(refs);
