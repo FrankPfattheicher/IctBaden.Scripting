@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.InteropServices;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace IctBaden.Scripting
 {
