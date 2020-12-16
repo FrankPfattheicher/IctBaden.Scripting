@@ -26,5 +26,17 @@ namespace IctBaden.Scripting.Test.CsharpScript
             Assert.Equal("Hallo, ich bin Frank !", result);
         }
 
+        [Fact]
+        public void MultilineTextShouldBePossible()
+        {
+            var context = new ScriptContext
+            {
+                ["TargetName"] = "Frank"
+            };
+
+            const string text = "Hallo,\r\n ich bin {{GetValue(\"TargetName\")}} ! \r\n Ja.";
+            var result = _engine.ReplaceExpressions(text, context);
+            Assert.Equal("Hallo,\r\n ich bin Frank ! \r\n Ja.", result);
+        }
     }
 }

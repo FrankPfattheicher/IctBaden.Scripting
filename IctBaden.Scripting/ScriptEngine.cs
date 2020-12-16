@@ -37,15 +37,15 @@ namespace IctBaden.Scripting
             if (string.IsNullOrEmpty(text))
                 return string.Empty;
 
-            var exprFinder = new Regex(@"([^\}]*)\{\{([^\}]+)\}\}(.*)");
+            var exprFinder = new Regex(@"\{\{([^\}]+)\}\}");
             for (; ; )
             {
                 var found = exprFinder.Match(text);
                 if (!found.Success)
                     break;
-                var expression = found.Groups[2].Value;
+                var expression = found.Groups[1].Value;
                 var result = Eval<string>(expression, context);
-                text = string.Concat(found.Groups[1].Value, result, found.Groups[3].Value);
+                text = text.Replace(found.Groups[0].Value, result);
             }
             return text;
         }
