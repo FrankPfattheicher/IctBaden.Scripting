@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -22,6 +23,7 @@ namespace IctBaden.Scripting.Engines
 
         public RoslynCsharpScript(string[] userImports)
         {
+            Trace.TraceInformation($"RoslynCsharpScript #1");
             var imports = new[]
                 {
                     "System",
@@ -31,12 +33,14 @@ namespace IctBaden.Scripting.Engines
                     "System.Net",
                     "System.Text",
                     "Microsoft.CSharp",
+                    "IctBaden.Framework",
                     "IctBaden.Framework.AppUtils"
                 }.Concat(userImports)
                 .ToArray();
 
+            Trace.TraceInformation($"RoslynCsharpScript #2");
             var refs = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.GetName().Name.StartsWith("System.") && !a.IsDynamic && !a.ReflectionOnly && a.DefinedTypes.Any())
+                .Where(a => a.GetName().Name!.StartsWith("System.") && !a.IsDynamic && !a.ReflectionOnly && a.DefinedTypes.Any())
                 .Union(new []
                 {
                     Assembly.GetEntryAssembly(),
@@ -45,9 +49,11 @@ namespace IctBaden.Scripting.Engines
                 })
                 .ToArray();
             
+            Trace.TraceInformation($"RoslynCsharpScript #3");
             _options = ScriptOptions.Default
                 .WithImports(imports)
                 .AddReferences(refs);
+            Trace.TraceInformation($"RoslynCsharpScript #4");
         }
 
         public override T Eval<T>(string expression, object context = null)

@@ -1,5 +1,7 @@
 ﻿using System;
 using IctBaden.Scripting.Engines;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UseNameofExpression
 
 namespace IctBaden.Scripting
 {
