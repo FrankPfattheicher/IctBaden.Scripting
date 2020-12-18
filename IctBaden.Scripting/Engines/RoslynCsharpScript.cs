@@ -23,7 +23,6 @@ namespace IctBaden.Scripting.Engines
 
         public RoslynCsharpScript(string[] userImports)
         {
-            Trace.TraceInformation($"RoslynCsharpScript #1");
             var imports = new[]
                 {
                     "System",
@@ -38,7 +37,6 @@ namespace IctBaden.Scripting.Engines
                 }.Concat(userImports)
                 .ToArray();
 
-            Trace.TraceInformation($"RoslynCsharpScript #2");
             var refs = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.GetName().Name!.StartsWith("System.") && !a.IsDynamic && !a.ReflectionOnly && a.DefinedTypes.Any())
                 .Union(new []
@@ -49,11 +47,9 @@ namespace IctBaden.Scripting.Engines
                 })
                 .ToArray();
             
-            Trace.TraceInformation($"RoslynCsharpScript #3");
             _options = ScriptOptions.Default
                 .WithImports(imports)
                 .AddReferences(refs);
-            Trace.TraceInformation($"RoslynCsharpScript #4");
         }
 
         public override T Eval<T>(string expression, object context = null)
