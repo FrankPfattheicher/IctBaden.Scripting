@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace IctBaden.Scripting
@@ -16,6 +17,7 @@ namespace IctBaden.Scripting
         public event Action<int, int, string> ScriptError;
         protected virtual bool OnScriptError(int line, int column, string message)
         {
+            Trace.TraceError("ScriptError: " + message);
             if (ScriptError == null) return false;
 
             ScriptError.Invoke(line, column, message);
