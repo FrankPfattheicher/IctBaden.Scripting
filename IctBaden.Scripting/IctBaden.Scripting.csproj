@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
     <PackageTags>1.0.0</PackageTags>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
