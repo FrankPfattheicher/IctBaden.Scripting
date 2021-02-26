@@ -6,6 +6,7 @@ namespace IctBaden.Scripting.Test.CsharpScript
     public class ExpressionTests : IDisposable
     {
         private readonly ScriptEngine _engine;
+        // ReSharper disable once NotAccessedField.Local
         private int _errorLine;
         private int _errorColumn;
         private string _errorMessage;
