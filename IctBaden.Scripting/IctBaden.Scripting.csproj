@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>Script Engine Abstraction</Title>
     <Authors>Frank Pfattheicher</Authors>
     <Copyright>(C) 2010-2021 ICT Baden GmbH</Copyright>
@@ -13,6 +12,7 @@
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
     <PackageTags>1.0.0</PackageTags>
     <LangVersion>9</LangVersion>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
