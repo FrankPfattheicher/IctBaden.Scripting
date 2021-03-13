@@ -13,6 +13,9 @@ using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace IctBaden.Scripting.Engines
 {
+    /// <summary>
+    /// https://carljohansen.wordpress.com/2020/05/09/compiling-expression-trees-with-roslyn-without-memory-leaks-2/
+    /// </summary>
     internal class RoslynCsharpScript : ScriptEngine
     {
         // ReSharper disable once UnusedMember.Local
@@ -81,6 +84,10 @@ namespace IctBaden.Scripting.Engines
 
                 var result = script.RunAsync(context, OnScriptException).Result;
 
+                if (result?.ReturnValue == null)
+                {
+                    return default(T);
+                }
                 return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T));
             }
             catch (Exception ex)

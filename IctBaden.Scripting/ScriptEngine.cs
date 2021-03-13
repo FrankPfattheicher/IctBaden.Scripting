@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace IctBaden.Scripting
 {
