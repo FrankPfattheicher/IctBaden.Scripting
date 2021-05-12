@@ -7,10 +7,10 @@ namespace IctBaden.Scripting
 {
     public static class ScriptFactory
     {
-        public static ScriptEngine CreateCsharpScriptEngine() => CreateScript("csx", new string[0]);
-        public static ScriptEngine CreateCsharpScriptEngine(string[] imports) => CreateScript("csx", imports);
+        public static ScriptEngine CreateCsharpScriptEngine() => CreateScriptEngine("csx", new string[0]);
+        public static ScriptEngine CreateCsharpScriptEngine(string[] imports) => CreateScriptEngine("csx", imports);
 
-        public static ScriptEngine CreateScript(string language, string[] imports)
+        public static ScriptEngine CreateScriptEngine(string language, string[] imports)
         {
             switch (language.ToLower())
             {

@@ -16,7 +16,7 @@ namespace IctBaden.Scripting.Engines
     /// <summary>
     /// https://carljohansen.wordpress.com/2020/05/09/compiling-expression-trees-with-roslyn-without-memory-leaks-2/
     /// </summary>
-    internal class RoslynCsharpScript : ScriptEngine
+    public class RoslynCsharpScript : ScriptEngine
     {
         // ReSharper disable once UnusedMember.Local
         private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
