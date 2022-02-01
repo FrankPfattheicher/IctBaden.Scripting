@@ -7,14 +7,14 @@
     <Copyright>(C) 2010-2022 ICT Baden GmbH</Copyright>
     <Description>Script engine abstraction easy to use in applications.</Description>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageProjectUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
-    <PackageTags>1.0.0</PackageTags>
-    <LangVersion>9</LangVersion>
-    <IsPackable>false</IsPackable>
+    <LangVersion>10</LangVersion>
+    <IsPackable>true</IsPackable>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="IctBaden.Framework" Version="1.4.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.10" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
