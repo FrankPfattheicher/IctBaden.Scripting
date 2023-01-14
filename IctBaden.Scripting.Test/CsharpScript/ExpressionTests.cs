@@ -72,10 +72,15 @@ namespace IctBaden.Scripting.Test.CsharpScript
         [Fact]
         public void ContextDynamicValuesBeResolved()
         {
-            var context = new ScriptContext();
-            context.Var.Value1 = 1000;
-            context.Var.Value2 = 234;
-        
+            var context = new ScriptContext
+            {
+                Var =
+                {
+                    Value1 = 1000,
+                    Value2 = 234
+                }
+            };
+
             const string script = "Var.Value1 + Var.Value2";
             var result = _engine.Eval<int>(script, context);
             Assert.Equal(1234, result);
