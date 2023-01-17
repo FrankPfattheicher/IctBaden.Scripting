@@ -7,15 +7,15 @@ namespace IctBaden.Scripting
     [ComVisible(true)]
     public class ScriptContext
     {
-        private readonly Dictionary<string, object> _valueList;
-        private QueryValue _queryValue;
+        private readonly Dictionary<string, object?> _valueList;
+        private QueryValue? _queryValue;
         public dynamic Var = new ExpandoObject(); 
 
         public delegate object QueryValue(string key);
 
         public ScriptContext()
         {
-            _valueList = new Dictionary<string, object>();
+            _valueList = new Dictionary<string, object?>();
             _queryValue = null;
         }
 
@@ -29,9 +29,9 @@ namespace IctBaden.Scripting
             _queryValue = query;
         }
 
-        public object GetValue(string key) => this[key];
+        public object? GetValue(string key) => this[key];
         
-        public object this[string key]
+        public object? this[string key]
         {
             set => _valueList[key] = value;
             get

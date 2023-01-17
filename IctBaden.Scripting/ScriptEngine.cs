@@ -10,13 +10,13 @@ namespace IctBaden.Scripting
     {
         public string LastError { get; protected set; }
 
-        public abstract T Eval<T>(string expression, object context = null);
+        public abstract T Eval<T>(string expression, object? context = null);
 
         /// <summary>
         /// User error handling
         /// Arguments: line, column, message
         /// </summary>
-        public event Action<int, int, string> ScriptError;
+        public event Action<int, int, string>? ScriptError;
         protected virtual bool OnScriptError(int line, int column, string message)
         {
             Trace.TraceError("ScriptError: " + message);
@@ -36,7 +36,7 @@ namespace IctBaden.Scripting
         {
         }
 
-        public string ReplaceExpressions(string text, object context = null)
+        public string ReplaceExpressions(string text, object? context = null)
         {
             if (string.IsNullOrEmpty(text))
                 return string.Empty;

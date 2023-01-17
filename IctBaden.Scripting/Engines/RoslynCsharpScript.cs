@@ -54,7 +54,7 @@ namespace IctBaden.Scripting.Engines
                 .AddReferences(refs);
         }
 
-        public override T Eval<T>(string expression, object context = null)
+        public override T Eval<T>(string expression, object? context = null)
         {
             LastError = string.Empty;
 
@@ -86,7 +86,7 @@ namespace IctBaden.Scripting.Engines
 
                 if (result?.ReturnValue == null)
                 {
-                    return default(T);
+                    return (T) UniversalConverter.ConvertToType(0, typeof(T));
                 }
                 return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T));
             }
