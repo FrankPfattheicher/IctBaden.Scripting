@@ -8,7 +8,7 @@ namespace IctBaden.Scripting;
 
 public abstract class ScriptEngine : IDisposable
 {
-    private readonly Regex _expressionFinder = new(@"\{\{([^\}]+)\}\}", RegexOptions.Compiled);
+    private Regex? _expressionFinder;
     public string LastError { get; protected set; } = string.Empty;
 
     public abstract T Eval<T>(string expression, object? context = null);
@@ -36,6 +36,7 @@ public abstract class ScriptEngine : IDisposable
         if (string.IsNullOrEmpty(text))
             return string.Empty;
 
+        _expressionFinder ??= new Regex(@"\{\{([^\}]+)\}\}", RegexOptions.Compiled);
         while(true)
         {
             var found = _expressionFinder.Match(text);
