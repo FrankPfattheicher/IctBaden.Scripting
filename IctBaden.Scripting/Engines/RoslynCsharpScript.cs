@@ -11,112 +11,113 @@ using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 // ReSharper disable CommentTypo
 
-namespace IctBaden.Scripting.Engines
+namespace IctBaden.Scripting.Engines;
+
+/// <summary>
+/// https://carljohansen.wordpress.com/2020/05/09/compiling-expression-trees-with-roslyn-without-memory-leaks-2/
+/// </summary>
+public class RoslynCsharpScript : ScriptEngine
 {
-    /// <summary>
-    /// https://carljohansen.wordpress.com/2020/05/09/compiling-expression-trees-with-roslyn-without-memory-leaks-2/
-    /// </summary>
-    public class RoslynCsharpScript : ScriptEngine
+    // ReSharper disable once UnusedMember.Local
+    private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
+    private readonly ScriptOptions _options;
+    private readonly Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>(); 
+
+    public RoslynCsharpScript(string[] userImports)
     {
-        // ReSharper disable once UnusedMember.Local
-        private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
-        private readonly ScriptOptions _options;
-        private readonly Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>(); 
-
-        public RoslynCsharpScript(string[] userImports)
-        {
-            var imports = new[]
-                {
-                    "System",
-                    "System.Diagnostics",
-                    "System.IO",
-                    "System.Linq",
-                    "System.Net",
-                    "System.Text",
-                    "Microsoft.CSharp",
-                    "IctBaden.Framework",
-                    "IctBaden.Framework.AppUtils"
-                }.Concat(userImports)
-                .ToArray();
-
-            var refs = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.GetName().Name!.StartsWith("System.") && !a.IsDynamic && !a.ReflectionOnly && a.DefinedTypes.Any())
-                .Union(new []
-                {
-                    Assembly.GetEntryAssembly(),
-                    Assembly.GetCallingAssembly(), 
-                    typeof(Binder).Assembly
-                })
-                .ToArray();
-            
-            _options = ScriptOptions.Default
-                .WithImports(imports)
-                .AddReferences(refs);
-        }
-
-        public override T Eval<T>(string expression, object? context = null)
-        {
-            LastError = string.Empty;
-
-            try
+        var imports = new[]
             {
-                Script<object> script;
-                if (_scripts.ContainsKey(expression))
+                "System",
+                "System.Diagnostics",
+                "System.IO",
+                "System.Linq",
+                "System.Net",
+                "System.Text",
+                "Microsoft.CSharp",
+                "IctBaden.Framework",
+                "IctBaden.Framework.AppUtils"
+            }.Concat(userImports)
+            .ToArray();
+
+        var refs = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => a.GetName().Name!.StartsWith("System.") 
+                        && a is { IsDynamic: false, ReflectionOnly: false } 
+                        && a.DefinedTypes.Any())
+            .Union(new []
+            {
+                Assembly.GetEntryAssembly(),
+                Assembly.GetCallingAssembly(), 
+                typeof(Binder).Assembly
+            })
+            .ToArray();
+            
+        _options = ScriptOptions.Default
+            .WithImports(imports)
+            .AddReferences(refs);
+    }
+
+    public override T Eval<T>(string expression, object? context = null)
+    {
+        LastError = string.Empty;
+
+        try
+        {
+            Script<object> script;
+            if (_scripts.TryGetValue(expression, out var existing))
+            {
+                script = existing;
+            }
+            else
+            {
+                script = (context != null)
+                    ? CSharpScript.Create(expression, _options, context.GetType())
+                    : CSharpScript.Create(expression, _options);
+
+                var compile = script.Compile();
+                if (compile.Any())
                 {
-                    script = _scripts[expression];
+                    LastError = string.Join(Environment.NewLine, compile);
                 }
                 else
                 {
-                    script = (context != null)
-                        ? CSharpScript.Create(expression, _options, context.GetType())
-                        : CSharpScript.Create(expression, _options);
-
-                    var compile = script.Compile();
-                    if (compile.Any())
-                    {
-                        LastError = string.Join(Environment.NewLine, compile);
-                    }
-                    else
-                    {
-                        _scripts.Add(expression, script);
-                    }
+                    _scripts.Add(expression, script);
                 }
-
-                var result = script.RunAsync(context, OnScriptException).Result;
-
-                if (result?.ReturnValue == null)
-                {
-                    return (T) UniversalConverter.ConvertToType(0, typeof(T));
-                }
-                return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T));
             }
-            catch (Exception ex)
+
+            var result = script.RunAsync(context, OnScriptException).Result;
+
+            if (result?.ReturnValue == null)
             {
-                var line = 0;
-                var column = 0;
-                var message = ex.Message;
+                return (T) UniversalConverter.ConvertToType(0, typeof(T));
+            }
+            return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T));
+        }
+        catch (Exception ex)
+        {
+            var line = 0;
+            var column = 0;
+            var message = ex.Message;
 
-                // (1,4): error CS1733: Ausdruck erwartet.
-                var decodeMessage = new Regex(@"^\(([0-9]+),([0-9]+)\): (.*)$")
-                    .Match(ex.Message);
-                if (decodeMessage.Success)
-                {
-                    line = int.Parse(decodeMessage.Groups[1].Value);
-                    column = int.Parse(decodeMessage.Groups[2].Value);
-                    message = decodeMessage.Groups[3].Value;
-                }
-
-                LastError = message;
-                OnScriptError(line, column, message);
+            // (1,4): error CS1733: Ausdruck erwartet.
+            var decodeMessage = new Regex(@"^\(([0-9]+),([0-9]+)\): (.*)$")
+                .Match(ex.Message);
+            if (decodeMessage.Success)
+            {
+                line = int.Parse(decodeMessage.Groups[1].Value);
+                column = int.Parse(decodeMessage.Groups[2].Value);
+                message = decodeMessage.Groups[3].Value;
             }
 
-            return (T) UniversalConverter.ConvertToType(string.Empty, typeof(T));
+            LastError = message;
+            OnScriptError(line, column, message);
         }
 
-        private bool OnScriptException(Exception arg)
-        {
-            LastError = arg.Message;
-            return OnScriptError(0, 0, arg.Message);
-        }
+        return (T) UniversalConverter.ConvertToType(string.Empty, typeof(T));
+    }
+
+    private bool OnScriptException(Exception arg)
+    {
+        LastError = arg.Message;
+        return OnScriptError(0, 0, arg.Message);
     }
 }

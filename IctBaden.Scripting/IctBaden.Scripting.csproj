@@ -10,7 +10,7 @@
     <PackageVersion>1.0.1</PackageVersion>
     <PackageProjectUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
-    <LangVersion>10</LangVersion>
+    <LangVersion>11</LangVersion>
     <IsPackable>true</IsPackable>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
