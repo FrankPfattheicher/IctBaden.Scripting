@@ -69,6 +69,20 @@ public class RoslynCsharpScript : ScriptEngine
             }
             else
             {
+                if (context is ScriptContext sc)
+                {
+                    var inits = string.Empty;
+                    foreach (var valueName in sc.ValueNames)
+                    {
+                        var value = sc[valueName];
+                        var valueText = value is string
+                            ? "\"" + value + "\""
+                            : value?.ToString() ?? string.Empty;
+                        inits = $"var {valueName} = {valueText};"
+                                + Environment.NewLine + inits;
+                    }
+                    expression = inits + $"return {expression};";
+                }
                 script = (context != null)
                     ? CSharpScript.Create(expression, _options, context.GetType())
                     : CSharpScript.Create(expression, _options);

@@ -45,7 +45,7 @@ namespace IctBaden.Scripting.TestApp
                         Run(_ => engine.Eval<string>("1 + 1"));
                         break;
                     case "c":
-                        Run(ix => engine.Eval<string>("1 + ix"));
+                        Run(_ => engine.Eval<string>("1 + ix"));
                         break;
                 }
             }

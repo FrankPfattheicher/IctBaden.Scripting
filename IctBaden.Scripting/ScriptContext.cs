@@ -37,5 +37,15 @@ public class ScriptContext
         }
     }
 
+    public IEnumerable<string> ValueNames
+    {
+        get
+        {
+            foreach (var keyValue in _valueList)
+            {
+                yield return keyValue.Key;
+            }
+        }
+    }
 
 }

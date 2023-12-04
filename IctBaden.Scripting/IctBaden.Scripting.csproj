@@ -6,8 +6,8 @@
     <Authors>Frank Pfattheicher</Authors>
     <Copyright>(C) 2010-2023 ICT Baden GmbH</Copyright>
     <Description>Script engine abstraction easy to use in applications.</Description>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageVersion>1.1.2</PackageVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageVersion>1.2.0</PackageVersion>
     <PackageProjectUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrankPfattheicher/IctBaden.Scripting</RepositoryUrl>
     <LangVersion>11</LangVersion>
