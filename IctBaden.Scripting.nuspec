@@ -26,6 +26,6 @@
         </references>
     </metadata>
     <files>
-        <file src="lib/IctBaden.Scripting.dll" target="lib"/>
+        <file src="lib/IctBaden.Scripting.dll" target="lib/net8.0"/>
     </files>
 </package>
