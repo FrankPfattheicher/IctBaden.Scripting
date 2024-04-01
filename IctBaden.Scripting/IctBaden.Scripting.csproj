@@ -13,7 +13,6 @@
     <IsPackable>true</IsPackable>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
   </PropertyGroup>
@@ -27,13 +26,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IctBaden.Framework" Version="2.2.0" />
+    <PackageReference Include="IctBaden.Framework" Version="3.2.1" />
     <PackageReference Include="IDisposableAnalyzers" Version="4.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.0.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.9.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="4.9.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 
