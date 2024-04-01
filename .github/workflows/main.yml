@@ -1,0 +1,53 @@
+name: CI-master-nuget
+
+on: 
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 3.1.100
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.x
+    - name: Setup Nuget
+      uses: NuGet/setup-nuget@v1
+    - name: Prepare Artifacts
+      run: |
+        mkdir artifacts
+        mkdir artifacts/lib
+        mkdir artifacts/images
+        
+    - name: Build IctBaden.Scripting with dotnet
+      run: |
+        version=$(grep -oP -m 1 '\* \K[0-9]*\.[0-9]*\.[0-9]*' ReleaseNotes.md)
+        echo Version=$version
+        dotnet build --configuration Release ./IctBaden.Scripting.sln -p:AssemblyVersion=$version -p:PackageVersion=$version -p:Version=1.0
+        cp IctBaden.Scripting/bin/Release/net8.0/IctBaden.Scripting.dll artifacts/lib
+        
+    - name: Test with dotnet
+      run: |
+        version=$(grep -oP -m 1 '\* \K[0-9]*\.[0-9]*\.[0-9]*' ReleaseNotes.md)
+        echo Version=$version
+        
+    - name: Pack Nuget
+      run: |
+        version=$(grep -oP -m 1 '\* \K[0-9]*\.[0-9]*\.[0-9]*' ReleaseNotes.md)
+        echo Version=$version
+        cd artifacts
+        ls -l
+        nuget pack ../IctBaden.Scripting.nuspec -BasePath . -Version $version
+        
+    - name: Publish NuGet
+      run: dotnet nuget push artifacts/*.nupkg --source https://www.nuget.org --api-key ${{ secrets.NugetKey }}
+
