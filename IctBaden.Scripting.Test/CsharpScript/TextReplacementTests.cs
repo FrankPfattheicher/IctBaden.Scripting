@@ -1,42 +1,61 @@
 ﻿using System;
 using Xunit;
 
-namespace IctBaden.Scripting.Test.CsharpScript
+namespace IctBaden.Scripting.Test.CsharpScript;
+
+public sealed class TextReplacementTests : IDisposable
 {
-    public class TextReplacementTests
+    private readonly ScriptEngine _engine;
+    private bool _disposed;
+
+    public TextReplacementTests()
     {
-        private readonly ScriptEngine _engine;
+        _engine = ScriptFactory.CreateCsharpScriptEngine();
+        _engine.ScriptError += (line, column, message) => Console.WriteLine($"({line},{column}): {message})");
+    }
 
-        public TextReplacementTests()
+    [Fact]
+    public void ContextValuesBeResolved()
+    {
+        var context = new ScriptContext
         {
-            _engine = ScriptFactory.CreateCsharpScriptEngine();
-            _engine.ScriptError += (line, column, message) => Console.WriteLine($"({line},{column}): {message})");
+            ["TargetName"] = "Frank"
+        };
+
+        const string text = "Hallo, ich bin {{GetValue(\"TargetName\")}} !";
+        var result = _engine.ReplaceExpressions(text, context);
+        Assert.Equal("Hallo, ich bin Frank !", result);
+    }
+
+    [Fact]
+    public void MultilineTextShouldBePossible()
+    {
+        var context = new ScriptContext
+        {
+            ["TargetName"] = "Frank"
+        };
+
+        const string text = "Hallo,\r\n ich bin {{GetValue(\"TargetName\")}} ! \r\n Ja.";
+        var result = _engine.ReplaceExpressions(text, context);
+        Assert.Equal("Hallo,\r\n ich bin Frank ! \r\n Ja.", result);
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
         }
 
-        [Fact]
-        public void ContextValuesBeResolved()
+        _disposed = true;
+        _engine?.Dispose();
+    }
+
+    private void ThrowIfDisposed()
+    {
+        if (_disposed)
         {
-            var context = new ScriptContext
-            {
-                ["TargetName"] = "Frank"
-            };
-
-            const string text = "Hallo, ich bin {{GetValue(\"TargetName\")}} !";
-            var result = _engine.ReplaceExpressions(text, context);
-            Assert.Equal("Hallo, ich bin Frank !", result);
-        }
-
-        [Fact]
-        public void MultilineTextShouldBePossible()
-        {
-            var context = new ScriptContext
-            {
-                ["TargetName"] = "Frank"
-            };
-
-            const string text = "Hallo,\r\n ich bin {{GetValue(\"TargetName\")}} ! \r\n Ja.";
-            var result = _engine.ReplaceExpressions(text, context);
-            Assert.Equal("Hallo,\r\n ich bin Frank ! \r\n Ja.", result);
+            throw new ObjectDisposedException(GetType().FullName);
         }
     }
 }

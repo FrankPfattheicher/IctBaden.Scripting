@@ -102,9 +102,9 @@ public class RoslynCsharpScript : ScriptEngine
 
             if (result?.ReturnValue == null)
             {
-                return (T) UniversalConverter.ConvertToType(0, typeof(T));
+                return (T) UniversalConverter.ConvertToType(0, typeof(T))!;
             }
-            return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T));
+            return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T))!;
         }
         catch (Exception ex)
         {
@@ -126,7 +126,7 @@ public class RoslynCsharpScript : ScriptEngine
             OnScriptError(line, column, message);
         }
 
-        return (T) UniversalConverter.ConvertToType(string.Empty, typeof(T));
+        return (T) UniversalConverter.ConvertToType(string.Empty, typeof(T))!;
     }
 
     private bool OnScriptException(Exception arg)

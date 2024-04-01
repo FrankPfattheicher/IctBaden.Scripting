@@ -3,7 +3,7 @@ using Xunit;
 
 namespace IctBaden.Scripting.Test.CsharpScript;
 
-public class ExpressionTests : IDisposable
+public sealed class ExpressionTests : IDisposable
 {
     private readonly ScriptEngine _engine;
 

@@ -27,7 +27,7 @@ public abstract class ScriptEngine : IDisposable
         return true;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
     }
 

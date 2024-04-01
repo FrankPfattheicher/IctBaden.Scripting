@@ -1,16 +1,15 @@
 using Xunit;
 
-namespace IctBaden.Scripting.Test
+namespace IctBaden.Scripting.Test;
+
+public class CreateEngineTests
 {
-    public class CreateEngineTests
+    [Fact]
+    public void CreatingCsharpScriptEngineShouldSucceed()
     {
-        [Fact]
-        public void CreatingCsharpScriptEngineShouldSucceed()
-        {
-            var engine = ScriptFactory.CreateCsharpScriptEngine();
+        using var engine = ScriptFactory.CreateCsharpScriptEngine();
 
-            Assert.NotNull(engine);
-        }
-
+        Assert.NotNull(engine);
     }
+
 }
