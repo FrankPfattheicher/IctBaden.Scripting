@@ -11,7 +11,7 @@ internal static class Program
     {
         Console.WriteLine("IctBaden.Scripting.Test");
 
-        using var engine = new RoslynCsharpScript(Array.Empty<string>());
+        using var engine = new RoslynCsharpScript([]);
             
         // ReSharper disable once UseObjectOrCollectionInitializer
         var context = new ScriptContext();

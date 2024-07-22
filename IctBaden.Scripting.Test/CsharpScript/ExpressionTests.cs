@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace IctBaden.Scripting.Test.CsharpScript;
@@ -101,4 +102,31 @@ public sealed class ExpressionTests : IDisposable
         var result = _engine.Eval<string>(script, context);
         Assert.Equal(expected, result);
     }
+    
+    [Fact]
+    public void EvalShouldReturnChangedContextValues()
+    {
+        const int expected = 345;
+        var context = new ScriptContext
+        {
+            Var =
+            {
+                Value1 = 111,
+                Value2 = 222
+            },
+            ["Var1"] = 1000,
+            ["Var2"] = 345
+        };
+
+        const string script = """
+                              Var.Value1 = Var2;
+                              Var1 = Var2
+                              """;
+        var result = _engine.Eval<int>(script, context);
+        Assert.Equal(expected, result);
+        
+        var byName = (IDictionary<string,object>)context.Var;
+        Assert.Equal(expected, byName["Value1"]);
+    }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Runtime.InteropServices;
+using IctBaden.Framework.Types;
 
 namespace IctBaden.Scripting;
 
@@ -10,6 +11,7 @@ public class ScriptContext
     private readonly Dictionary<string, object?> _valueList = new();
     private QueryValue? _queryValue;
     public dynamic Var = new ExpandoObject(); 
+    public dynamic Result = new ExpandoObject(); 
 
     public delegate object QueryValue(string key);
 
@@ -24,6 +26,7 @@ public class ScriptContext
     }
 
     public object? GetValue(string key) => this[key];
+    public T? GetValue<T>(string key) => UniversalConverter.ConvertTo<T>(_valueList[key]) ?? default(T);
         
     public object? this[string key]
     {
@@ -31,9 +34,7 @@ public class ScriptContext
         get
         {
             var val = _queryValue?.Invoke(key);
-            if (val != null)
-                return val;
-            return _valueList.TryGetValue(key, out var value) ? value : null;
+            return val ?? _valueList.GetValueOrDefault(key);
         }
     }
 

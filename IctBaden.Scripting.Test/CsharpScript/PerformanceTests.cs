@@ -49,14 +49,7 @@ public sealed class PerformanceTests : IDisposable
         }
 
         _disposed = true;
-        _engine?.Dispose();
+        _engine.Dispose();
     }
 
-    private void ThrowIfDisposed()
-    {
-        if (_disposed)
-        {
-            throw new ObjectDisposedException(GetType().FullName);
-        }
-    }
 }

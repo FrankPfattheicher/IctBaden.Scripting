@@ -21,39 +21,51 @@ public class RoslynCsharpScript : ScriptEngine
     // ReSharper disable once UnusedMember.Local
     private AssemblyInfo _assemblyInfo = AssemblyInfo.Default;
     private readonly ScriptOptions _options;
-    private readonly Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>(); 
+    private readonly Dictionary<string, Script<object>> _scripts = new Dictionary<string, Script<object>>();
+
+#pragma warning disable SYSLIB1045
+    private static readonly Regex DecodeErrorMessage = new(@"^\(([0-9]+),([0-9]+)\): (.*)$", RegexOptions.Compiled);
+#pragma warning restore SYSLIB1045
+    
+    private static readonly string[] DefaultImports =
+    [
+        "System",
+        "System.Diagnostics",
+        "System.IO",
+        "System.Linq",
+        "System.Net",
+        "System.Text",
+        "Microsoft.CSharp",
+        "IctBaden.Framework",
+        "IctBaden.Framework.AppUtils"
+    ];
 
     public RoslynCsharpScript(string[] userImports)
     {
-        var imports = new[]
-            {
-                "System",
-                "System.Diagnostics",
-                "System.IO",
-                "System.Linq",
-                "System.Net",
-                "System.Text",
-                "Microsoft.CSharp",
-                "IctBaden.Framework",
-                "IctBaden.Framework.AppUtils"
-            }.Concat(userImports)
+        var imports = DefaultImports
+            .Concat(userImports)
             .ToArray();
 
-        var refs = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(a => a.GetName().Name!.StartsWith("System.") 
-                        && a is { IsDynamic: false, ReflectionOnly: false } 
-                        && a.DefinedTypes.Any())
-            .Union(new []
-            {
-                Assembly.GetEntryAssembly(),
-                Assembly.GetCallingAssembly(), 
-                typeof(Binder).Assembly
-            })
+        var userRefs = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => userImports.Any(ui => ui == a.GetName().Name)) 
             .ToArray();
-            
+        
+        var currentDomainRefs = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => a.GetName().Name!.StartsWith("System.")
+                        && a is { IsDynamic: false, ReflectionOnly: false }
+                        && a.DefinedTypes.Any())
+            .Union(
+            [
+                Assembly.GetEntryAssembly(),
+                Assembly.GetCallingAssembly(),
+                typeof(Binder).Assembly
+            ])
+            .Union(userRefs)
+            .ToArray();
+
         _options = ScriptOptions.Default
             .WithImports(imports)
-            .AddReferences(refs);
+            .AddReferences(currentDomainRefs);
     }
 
     public override T Eval<T>(string expression, object? context = null)
@@ -81,9 +93,11 @@ public class RoslynCsharpScript : ScriptEngine
                         inits = $"var {valueName} = {valueText};"
                                 + Environment.NewLine + inits;
                     }
+
                     expression = inits + $"return {expression};";
                 }
-                script = (context != null)
+
+                script = context != null
                     ? CSharpScript.Create(expression, _options, context.GetType())
                     : CSharpScript.Create(expression, _options);
 
@@ -102,9 +116,10 @@ public class RoslynCsharpScript : ScriptEngine
 
             if (result?.ReturnValue == null)
             {
-                return (T) UniversalConverter.ConvertToType(0, typeof(T))!;
+                return (T)UniversalConverter.ConvertToType(0, typeof(T))!;
             }
-            return (T) UniversalConverter.ConvertToType(result.ReturnValue, typeof(T))!;
+
+            return (T)UniversalConverter.ConvertToType(result.ReturnValue, typeof(T))!;
         }
         catch (Exception ex)
         {
@@ -112,8 +127,8 @@ public class RoslynCsharpScript : ScriptEngine
             var column = 0;
             var message = ex.Message;
 
-            // (1,4): error CS1733: Ausdruck erwartet.
-            var decodeMessage = new Regex(@"^\(([0-9]+),([0-9]+)\): (.*)$")
+            // sample: (1,4): error CS1733: Ausdruck erwartet.
+            var decodeMessage = DecodeErrorMessage 
                 .Match(ex.Message);
             if (decodeMessage.Success)
             {
@@ -126,7 +141,7 @@ public class RoslynCsharpScript : ScriptEngine
             OnScriptError(line, column, message);
         }
 
-        return (T) UniversalConverter.ConvertToType(string.Empty, typeof(T))!;
+        return (T)UniversalConverter.ConvertToType(string.Empty, typeof(T))!;
     }
 
     private bool OnScriptException(Exception arg)
