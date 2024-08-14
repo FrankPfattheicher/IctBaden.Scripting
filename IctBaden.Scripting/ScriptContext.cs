@@ -35,9 +35,9 @@ public class ScriptContext
 
     public object? GetVar(string name)
     {
-        if (Var is IDictionary<string, object> dict)
+        if (Var is IDictionary<string, object> dict && dict.TryGetValue(name, out var value))
         {
-            return dict[name];
+            return value;
         }
         return null;
     }

@@ -1,4 +1,5 @@
 
+* 1.4.2 - 14.08.2024 Handle GetVar for not existing value
 * 1.4.1 - 14.08.2024 Added context SetVar and GetVar
 * 1.4.0 - 22.07.2024 Added ScriptContext.Result
 

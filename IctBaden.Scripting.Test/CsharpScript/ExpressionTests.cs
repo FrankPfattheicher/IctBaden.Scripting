@@ -154,4 +154,43 @@ public sealed class ExpressionTests : IDisposable
         Assert.Equal(222, value2);
     }
 
+    [Fact]
+    public void SpacesInExpressionShouldBeAccepted()
+    {
+        const double expected = 111.1 + 222.2;
+        var context = new ScriptContext();
+        
+        context.SetVar("Asset_1_Power", 111.1);
+        context.SetVar("Asset_2_Power", 222.2);
+
+        const string script = " Var.Asset_1_Power + Var.Asset_2_Power ";
+        var result = _engine.Eval<double>(script, context);
+        Assert.Equal(expected, result);
+
+        var value1 = context.GetVar("Asset_1_Power");
+        Assert.Equal(111.1, value1);
+
+        var value2 = context.GetVar("Asset_2_Power");
+        Assert.Equal(222.2, value2);
+    }
+
+    [Fact]
+    public void ContextShouldReturnNullForUndefinedVar()
+    {
+        var context = new ScriptContext();
+        
+        context.SetVar("Asset_1_Power", 111.1);
+        context.SetVar("Asset_2_Power", 222.2);
+
+        var value1 = context.GetVar("Asset_1_Power");
+        Assert.Equal(111.1, value1);
+
+        var value2 = context.GetVar("Asset_2_Power");
+        Assert.Equal(222.2, value2);
+        
+        var value3 = context.GetVar("Asset_3_Power");
+        Assert.Null(value3);
+
+    }
+
 }
