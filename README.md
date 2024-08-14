@@ -14,3 +14,10 @@ Optional user error handling:
 	engine.ScriptError += (line, column, message) => Console.WriteLine($"({line},{column}): {message})");
 ```
 
+Optional context and variable handling:
+```csharp
+	var engine = ScriptFactory.CreateCsharpScriptEngine();
+    var context = new ScriptContext();
+    
+	engine.ScriptError += (line, column, message) => Console.WriteLine($"({line},{column}): {message})");
+```

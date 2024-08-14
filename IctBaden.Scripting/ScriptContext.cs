@@ -25,6 +25,23 @@ public class ScriptContext
         _queryValue = query;
     }
 
+    public void SetVar(string name, object value)
+    {
+        if (Var is IDictionary<string, object> dict)
+        {
+            dict[name] = value;
+        }
+    }
+
+    public object? GetVar(string name)
+    {
+        if (Var is IDictionary<string, object> dict)
+        {
+            return dict[name];
+        }
+        return null;
+    }
+
     public object? GetValue(string key) => this[key];
     public T? GetValue<T>(string key) => UniversalConverter.ConvertTo<T>(_valueList[key]) ?? default(T);
         

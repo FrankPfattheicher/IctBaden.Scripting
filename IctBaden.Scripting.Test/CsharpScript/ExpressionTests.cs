@@ -129,4 +129,29 @@ public sealed class ExpressionTests : IDisposable
         Assert.Equal(expected, byName["Value1"]);
     }
 
+    [Fact]
+    public void SettingContextValuesShouldBeUsedInExpression()
+    {
+        const int expected = 345;
+        var context = new ScriptContext();
+        
+        context.SetVar("Value1", 111);
+        context.SetVar("Value2", 222);
+        context["Var1"] = 1000;
+        context["Var2"] = 345;
+
+        const string script = """
+                              Var.Value1 = Var2;
+                              Var1 = Var2
+                              """;
+        var result = _engine.Eval<int>(script, context);
+        Assert.Equal(expected, result);
+
+        var value1 = context.GetVar("Value1");
+        Assert.Equal(expected, value1);
+
+        var value2 = context.GetVar("Value2");
+        Assert.Equal(222, value2);
+    }
+
 }

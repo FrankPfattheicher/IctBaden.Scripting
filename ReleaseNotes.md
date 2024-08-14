@@ -1,5 +1,7 @@
 
+* 1.4.1 - 14.08.2024 Added context SetVar and GetVar
 * 1.4.0 - 22.07.2024 Added ScriptContext.Result
+
 * 1.3.0 - 01.04.2024 C#12, NET 8.0, IDisposableAnalyzers
 
 * 1.2.0 - 04.12.2023 netcore 6.0, Eval initializes ScriptContext values prior to evaluation
