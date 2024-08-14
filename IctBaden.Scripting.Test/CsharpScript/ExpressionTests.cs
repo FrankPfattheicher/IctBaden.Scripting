@@ -175,6 +175,26 @@ public sealed class ExpressionTests : IDisposable
     }
 
     [Fact]
+    public void MultipleEvaluationShouldReturnIdenticalResults()
+    {
+        const double expected = 111.1 + 222.2;
+        var context = new ScriptContext();
+        
+        context.SetVar("Asset_1_Power", 111.1);
+        context.SetVar("Asset_2_Power", 222.2);
+
+        const string script = " Var.Asset_1_Power + Var.Asset_2_Power ";
+        var result = _engine.Eval<double>(script, context);
+        Assert.Equal(expected, result);
+
+        result = _engine.Eval<double>(script, context);
+        Assert.Equal(expected, result);
+        
+        result = _engine.Eval<double>(script, context);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
     public void ContextShouldReturnNullForUndefinedVar()
     {
         var context = new ScriptContext();

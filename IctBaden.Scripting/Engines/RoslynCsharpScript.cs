@@ -81,6 +81,8 @@ public class RoslynCsharpScript : ScriptEngine
             }
             else
             {
+                var evalExpression = expression;
+                
                 if (context is ScriptContext sc)
                 {
                     var inits = string.Empty;
@@ -94,12 +96,12 @@ public class RoslynCsharpScript : ScriptEngine
                                 + Environment.NewLine + inits;
                     }
 
-                    expression = inits + $"return {expression};";
+                    evalExpression = inits + $"return {expression};";
                 }
 
                 script = context != null
-                    ? CSharpScript.Create(expression, _options, context.GetType())
-                    : CSharpScript.Create(expression, _options);
+                    ? CSharpScript.Create(evalExpression, _options, context.GetType())
+                    : CSharpScript.Create(evalExpression, _options);
 
                 var compile = script.Compile();
                 if (compile.Any())
