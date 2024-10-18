@@ -14,9 +14,9 @@
         <tags>.NET Core</tags>
         <dependencies>
             <dependency id="IctBaden.Framework" version="4.0.1" />
-            <dependency id="Microsoft.CodeAnalysis.Common" version="4.10.0" />
-            <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="4.10.0" />
-            <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="4.10.0" />
+            <dependency id="Microsoft.CodeAnalysis.Common" version="4.11.0" />
+            <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="4.11.0" />
+            <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="4.11.0" />
             <dependency id="Microsoft.CSharp" version="4.7.0" />
         </dependencies>
         <references>

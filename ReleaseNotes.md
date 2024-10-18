@@ -1,4 +1,5 @@
 
+* 1.4.5 - 18.10.2024 Fixed nuspec
 * 1.4.4 - 18.10.2024 Updated Microsoft.CodeAnalysis to 4.11
 * 1.4.3 - 14.08.2024 Fixed expression cache
 * 1.4.2 - 14.08.2024 Handle GetVar for not existing value
