@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace IctBaden.Scripting.Test.CsharpScript;
 

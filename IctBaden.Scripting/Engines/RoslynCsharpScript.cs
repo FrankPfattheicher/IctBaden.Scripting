@@ -61,6 +61,7 @@ public class RoslynCsharpScript : ScriptEngine
                 typeof(Binder).Assembly
             ])
             .Union(userRefs)
+            .Cast<Assembly>()
             .ToArray();
 
         _options = ScriptOptions.Default

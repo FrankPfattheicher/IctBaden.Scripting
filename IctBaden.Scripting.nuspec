@@ -10,14 +10,13 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Script engine abstraction</description>
         <releaseNotes>Stable</releaseNotes>
-        <copyright>Copyright ICT Baden GmbH 2013-2024</copyright>
+        <copyright>Copyright ICT Baden GmbH 2013-2026</copyright>
         <tags>.NET Core</tags>
         <dependencies>
-            <dependency id="IctBaden.Framework" version="4.0.1" />
-            <dependency id="Microsoft.CodeAnalysis.Common" version="4.11.0" />
-            <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="4.11.0" />
-            <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="4.11.0" />
-            <dependency id="Microsoft.CSharp" version="4.7.0" />
+            <dependency id="IctBaden.Framework" version="10.0.0" />
+            <dependency id="Microsoft.CodeAnalysis.Common" version="5.3.0" />
+            <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="5.3.0" />
+            <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="5.3.0" />
         </dependencies>
         <references>
             <group targetFramework="net8.0" >
