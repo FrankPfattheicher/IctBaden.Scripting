@@ -19,12 +19,12 @@
             <dependency id="Microsoft.CodeAnalysis.Scripting.Common" version="5.3.0" />
         </dependencies>
         <references>
-            <group targetFramework="net8.0" >
+            <group targetFramework="net10.0" >
                 <reference file="IctBaden.Scripting.dll"/>
             </group>
         </references>
     </metadata>
     <files>
-        <file src="lib/net8.0/IctBaden.Scripting.dll" target="lib/net8.0"/>
+        <file src="lib/net10.0/IctBaden.Scripting.dll" target="lib/net10.0"/>
     </files>
 </package>
