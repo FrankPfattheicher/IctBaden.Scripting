@@ -8,16 +8,22 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup .NET 8
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET 10
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.x
+        dotnet-version: 10.x
+
+    - name: Install Mono
+      run: sudo apt-get install -y mono-complete
+
     - name: Setup Nuget
-      uses: NuGet/setup-nuget@v1
+      uses: NuGet/setup-nuget@v4
+    
     - name: Prepare Artifacts
       run: |
         mkdir artifacts
