@@ -1,5 +1,6 @@
 ﻿using System;
 using IctBaden.Scripting.Engines;
+// ReSharper disable AccessToDisposedClosure
 
 namespace IctBaden.Scripting.TestApp;
 
@@ -12,7 +13,7 @@ internal static class Program
         Console.WriteLine("IctBaden.Scripting.Test");
 
         using var engine = new RoslynCsharpScript([]);
-            
+
         // ReSharper disable once UseObjectOrCollectionInitializer
         var context = new ScriptContext();
         context.Var.TestString = "Als Google Doodle wird die grafische Veränderung des Firmenlogos des US-amerikanischen Unternehmens Google LLC bezeichnet";

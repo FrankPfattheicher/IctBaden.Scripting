@@ -9,6 +9,7 @@ public sealed class ComplexReturnTests : IDisposable
 
     // ReSharper disable once NotAccessedField.Local
     private int _errorLine;
+    // ReSharper disable once NotAccessedField.Local
     private int _errorColumn;
     private string _errorMessage = string.Empty;
 

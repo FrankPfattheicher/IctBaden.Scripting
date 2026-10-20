@@ -47,12 +47,12 @@ public class ScriptContext
         
     public object? this[string key]
     {
-        set => _valueList[key] = value;
         get
         {
             var val = _queryValue?.Invoke(key);
             return val ?? _valueList.GetValueOrDefault(key);
         }
+        set => _valueList[key] = value;
     }
 
     public IEnumerable<string> ValueNames
