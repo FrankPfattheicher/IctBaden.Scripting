@@ -37,6 +37,7 @@ jobs:
         echo Version=$version
         dotnet build --configuration Release ./IctBaden.Scripting.sln -p:AssemblyVersion=$version -p:PackageVersion=$version -p:Version=1.0
         cp IctBaden.Scripting/bin/Release/net10.0/IctBaden.Scripting.dll artifacts/lib/net10.0
+        cp README.md artifacts
         
     - name: Test with dotnet
       run: |
